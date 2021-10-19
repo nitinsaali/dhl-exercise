@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operato
   templateUrl: './autocomplete-input.component.html',
   styleUrls: ['./autocomplete-input.component.scss']
 })
-export class AutocompleteInputComponent implements OnInit {
+export class AutocompleteInputComponent implements OnInit, OnDestroy {
   private unsubscribe: Subject<any> = new Subject<any>();
   public countrySearch: FormControl = new FormControl('');
   public countryList = [];
@@ -47,5 +47,11 @@ export class AutocompleteInputComponent implements OnInit {
 
     //return this.http.get(`${this.API_URL}/countries?q=${searchTerm}`);
     return this.http.get(`${this.API_URL}/countries`);
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+    this.unsubscribe.unsubscribe();
   }
 }
