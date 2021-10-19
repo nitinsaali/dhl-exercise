@@ -1,0 +1,8 @@
+<div class="wrapper">
+    <div class="control">
+      <input type="text" class="input" [formControl]="countrySearch"/>
+    </div>
+    <div class="list is-hoverable" *ngIf="countryList.length > 0">
+        <a class="item" *ngFor="let country of countryList"></a>
+    </div>
+  </div>
